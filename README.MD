@@ -3,3 +3,5 @@
 ![Diagrama](<Diagrama Autos.png>)
 
 Nuestra base de datos trata sobre una tienda de autos de lujo.
+
+Integrantes: Nikos lettos, 
