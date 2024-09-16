@@ -4,4 +4,4 @@
 
 Nuestra base de datos trata sobre una tienda de autos de lujo.
 
-<p>INTEGRANTES: Nikos lettos,<p>
+<h2>INTEGRANTES: Nikos lettos,</h2>
