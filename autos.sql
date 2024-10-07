@@ -22,14 +22,14 @@ REFERENCES Modelo(Id);
 
 -- Inserción de datos en Modelo
 INSERT INTO Modelo (Nombre, Anio, Capacidad, Combustible) VALUES
-('Ferrari 488 GTB', 2020, 2, 'Gasolina'),
-('Ferrari Portofino', 2021, 4, 'Gasolina'),
-('Lamborghini Huracan', 2020, 2, 'Gasolina'),
-('Lamborghini Aventador', 2021, 2, 'Gasolina'),
-('Porsche Panamera', 2022, 4, 'Híbrido'),
-('Porsche Taycan', 2023, 4, 'Eléctrico'),
-('Bentley Continental GT', 2020, 4, 'Gasolina'),
-('Bentley Flying Spur', 2022, 4, 'Gasolina'),
+('488 GTB', 2020, 2, 'Gasolina'),
+('Portofino', 2021, 4, 'Gasolina'),
+('Huracan', 2020, 2, 'Gasolina'),
+('Aventador', 2021, 2, 'Gasolina'),
+('Panamera', 2022, 4, 'Híbrido'),
+('Taycan', 2023, 4, 'Eléctrico'),
+('Continental GT', 2020, 4, 'Gasolina'),
+('Flying Spur', 2022, 4, 'Gasolina');
 
 
 -- Inserción de datos en Auto
