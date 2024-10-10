@@ -20,8 +20,13 @@ class TaskController {
 
     //Acá le indica al modelo que agarre todos los datos, y a la vista que muestre esos datos.
     public function showVehicles() {
-        $data = $this->model->getData();
+        $data = $this->model->getAllData();
         $this->taskView->showVehicles($data);
+    }
+
+    public function vehicle($id) {
+        $data = $this->model->getById($id);
+        $this->taskView->vehicle($data);
     }
 }
 

@@ -1,0 +1,18 @@
+    <section class="container">
+        <div class="row my-5">
+            <div class="col-md-6">
+                <img src="car_image.jpg" class="img-fluid" alt="Car">
+            </div>
+            <div class="col-md-6">
+                <h1><?= $vehicle[0]["Marca"]." ".$vehicle[0]["ModeloNombre"] ?></h1>
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Marca: </strong><?= $vehicle[0]["Marca"]?></li>
+                    <li class="list-group-item"><strong>Modelo: </strong><?= $vehicle[0]["ModeloNombre"] ?></li>
+                    <li class="list-group-item"><strong>Año: </strong><?= $vehicle[0]["Anio"]?></li>
+                    <li class="list-group-item"><strong>Kilometraje: </strong><?= $vehicle[0]["Kilometraje"]." Kms"?></li>
+                    <li class="list-group-item"><strong>Precio: </strong><?= "USD $".$vehicle[0]["Precio"]?></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+

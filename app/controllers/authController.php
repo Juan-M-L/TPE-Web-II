@@ -1,6 +1,6 @@
 <?php
 //Todavía no iniciado.
-require_once 'authView.php';
+//require_once 'authView.php';
 
 class AuthController {
 

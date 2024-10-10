@@ -18,4 +18,12 @@ class TaskView {
 
         require 'templates/layout/footer.phtml';
     }
+
+    public function vehicle($vehicle) {
+        require 'templates/layout/header.phtml';
+
+        require 'templates/vehicle/vehicle.phtml';
+
+        require 'templates/layout/footer.phtml';
+    }
 }

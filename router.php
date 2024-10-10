@@ -3,6 +3,9 @@
 require_once "app/controllers/authController.php";
 require_once "app/controllers/taskController.php";
 
+define('BASE_URL', '//'.$_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']).'/');
+
+
 if (!empty($_GET["action"])) {
     $action = $_GET["action"];
 } else {
@@ -23,6 +26,11 @@ switch ($params[0]) {
     case 'showVehicles':
         $controller = new TaskController();
         $controller->showVehicles();
+        break;
+    //Muestra un vehículo particular.
+    case 'vehicle':
+        $controller = new TaskController();
+        $controller->vehicle($_GET['id']);
         break;
     //Muestra la sección de iniciar sesión (Todavía no iniciado.)
     case 'showLogin':
