@@ -23,6 +23,15 @@ class TaskController {
         $data = $this->model->getData();
         $this->taskView->showVehicles($data);
     }
+    public function showCategories() {
+        $categories = $this->model->getAllCategories();
+        $this->taskView->showCategories($categories);
+    }
+
+    public function showVehiclesByCategory($categoryId) {
+        $vehicles = $this->model->getVehiclesByCategory($categoryId);
+        $this->taskView->showVehicles($vehicles);
+    }
 }
 
 // TODO: CREAR VISTA DE LOGIN.
