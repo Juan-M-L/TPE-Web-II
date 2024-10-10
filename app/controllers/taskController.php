@@ -27,6 +27,16 @@ class TaskController {
     public function vehicle($id) {
         $data = $this->model->getById($id);
         $this->taskView->vehicle($data);
+    }  
+
+    public function showCategories() {
+        $categories = $this->model->getAllCategories();
+        $this->taskView->showCategories($categories);
+    }
+
+    public function showVehiclesByCategory($categoryId) {
+        $vehicles = $this->model->getVehiclesByCategory($categoryId);
+        $this->taskView->showVehicles($vehicles);
     }
 }
 
