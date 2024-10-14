@@ -30,7 +30,8 @@ switch ($params[0]) {
     //Muestra un vehículo particular.
     case 'vehicle':
         $controller = new TaskController();
-        $controller->vehicle($_GET['id']);
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $controller->vehicle($id);
         break;
     //Muestra la sección de iniciar sesión (Todavía no iniciado.)
     case 'showLogin':

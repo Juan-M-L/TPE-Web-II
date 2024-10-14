@@ -2,27 +2,48 @@
 
 class TaskView {
 
-    public function home() {
+    public function home($error) {
         require 'templates/layout/header.phtml';
+        
+        if ($error) {
+            require 'templates/layout/error.phtml';
+        }
 
-        require 'templates/home/carousel.phtml';
+        require 'templates/home/presentation.phtml';
 
         require 'templates/layout/footer.phtml';
     }
 
-    public function showVehicles($vehicles) {
+    public function showVehicles($vehicles, $error) {
         require 'templates/layout/header.phtml';
+
+        if ($error) {
+            require 'templates/layout/error.phtml';
+        }
 
         require 'templates/showVehicles/form.phtml';
-        require 'templates/showVehicles/showVehicles.phtml';
+
+        if (count($vehicles) > 0) {
+            require 'templates/showVehicles/showVehicles.phtml';            
+        } else {
+            require 'templates/showVehicles/showEmptyResult.phtml';
+        }
 
         require 'templates/layout/footer.phtml';
     }
 
-    public function vehicle($vehicle) {
+    public function vehicle($vehicle, $error) {
         require 'templates/layout/header.phtml';
 
-        require 'templates/vehicle/vehicle.phtml';
+        if ($error) {
+            require 'templates/layout/error.phtml';
+        }
+
+        if (count($vehicle) > 0) {
+            require 'templates/vehicle/vehicle.phtml';
+        } else {
+            require 'templates/vehicle/noVehicleFound.phtml';
+        }
 
         require 'templates/layout/footer.phtml';
     }
