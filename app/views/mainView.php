@@ -28,6 +28,10 @@ class MainView {
 
         require 'templates/showVehicles/form.phtml';
 
+        if (isset($this->user->admin) && $this->user->admin == true) {
+            require 'templates/showVehicles/adminOptions.phtml';
+        }
+
         if (count($vehicles) > 0) {
             require 'templates/showVehicles/showVehicles.phtml';            
         } else {
