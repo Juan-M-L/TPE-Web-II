@@ -1,6 +1,6 @@
 <?php
 
-class Model {
+class MainModel {
     private $db;
     private $dbError;
 
@@ -61,7 +61,7 @@ class Model {
 
     // Obtiene vehículos por categoría
     public function getVehiclesByCategory($categoryId) {
-        if ($this->dbError| $categoryId == false) return [];
+        if ($this->dbError || $categoryId == false) return [];
         $data = $this->db->prepare("SELECT * FROM auto JOIN modelo ON auto.ModeloId = modelo.Id WHERE modelo.Id = :categoryId;");
         $data->bindParam(':categoryId', $categoryId);
         $data->execute();

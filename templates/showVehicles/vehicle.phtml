@@ -8,7 +8,10 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 <a href="<?= "vehicle?id=".$vehicle['AutoId'] ?>" class="btn btn-sm btn-outline-secondary">Ver</a>                           
-                                <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>                           
+                                <?php if(isset($this->user->admin)): ?>
+                                    <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>                           
+                                    <a href="#" class="btn btn-sm btn-outline-danger">Eliminar</a>                           
+                                <?php endif ?>
                             </div>
                             <small class="text-body-secondary"><?= "$".$vehicle['Precio']." USD"; ?></small>
                         </div>
