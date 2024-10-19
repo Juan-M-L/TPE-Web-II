@@ -1,0 +1,9 @@
+      
+    <!-- Listado de categorías -->
+    <section class="album py-5 bg-body-tertiary px-1">
+        <div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 g-2">
+            <?php foreach ($categories as $category): ?>
+                <?php require 'category.phtml';?>
+            <?php endforeach; ?>
+        </div>
+    </section>

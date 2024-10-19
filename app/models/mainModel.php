@@ -26,7 +26,7 @@ class MainModel {
         Auto.Marca, 
         Auto.ModeloId, 
         Auto.Precio, 
-        Modelo.Nombre as ModeloNombre
+        Modelo.Nombre
         FROM Auto JOIN Modelo ON Auto.ModeloId = Modelo.Id;");
         $data->execute();
         return $data->fetchAll();
@@ -41,7 +41,7 @@ class MainModel {
         Auto.ModeloId, 
         Auto.Kilometraje, 
         Auto.Precio, 
-        Modelo.Nombre as ModeloNombre, 
+        Modelo.Nombre, 
         Modelo.Anio, 
         Modelo.Capacidad, 
         Modelo.Combustible
@@ -51,7 +51,23 @@ class MainModel {
         return $data->fetchAll();
     }
 
-    // Obtiene todas las categorías (marcas)
+    //Agrega un auto a la base de datos.
+    public function addVehicle($marca, $modeloId, $kilometraje, $precio) {
+        $data = $this->db->prepare("INSERT INTO Auto (Marca, ModeloId, Kilometraje, Precio) VALUES (?,?,?,?);");
+        $data->execute(array($marca, $modeloId, $kilometraje, $precio));
+    }
+
+    public function updateVehicle($id, $marca, $modeloId, $kilometraje, $precio) {
+        $data = $this->db->prepare("UPDATE Auto SET Marca = ?, ModeloId = ?, Kilometraje = ?, Precio = ? WHERE Id = ?;");
+        $data->execute(array($marca, $modeloId, $kilometraje, $precio, $id));
+    }
+
+    public function deleteVehicle($id) {
+        $data = $this->db->prepare("DELETE FROM Auto WHERE Id = ?;");
+        $data->execute(array($id));
+    }
+
+    // Obtiene todas las categorías (modelos)
     public function getAllCategories() {
         if ($this->dbError) return [];
         $data = $this->db->prepare("SELECT * FROM modelo;");

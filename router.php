@@ -40,11 +40,59 @@ switch ($params[0]) {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         $controller->vehicle($id);
         break;
+    //Muestra la interfaz para agregar un vehículo.
+    case 'showAddVehicle':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $controller->showAddVehicle();
+        break;
+    //Agrega un vehículo.
+    case 'addVehicle':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $controller->addVehicle();
+        break;
+    case 'showUpdateVehicle':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $controller->showUpdateVehicle("", $id);
+        break;
+    case 'updateVehicle':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $controller->updateVehicle();
+        break;
+    case 'deleteVehicle':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $controller->deleteVehicle($id);
+        break;
+    //Muestra todas las categorías (todos los modelos)
+    case 'showCategories':
+        sessionAuthMiddleware($response);
+        $controller = new MainController($response);
+        $controller->showCategories();
+        break;
+    //Muestra todos los autos pertenecientes a una categoría particular.
+    case 'category':
+        sessionAuthMiddleware($response);
+        $controller = new MainController($response);
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $controller->showVehiclesByCategory($id);
+        break; 
     //Muestra la sección de iniciar sesión.
     case 'showLogin':
         $controller = new AuthController();
         $controller->showLogin();
         break;
+    //Inicia sesión.
     case 'login':
         $controller = new AuthController();
         $controller->login();
