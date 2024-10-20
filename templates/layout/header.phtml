@@ -12,12 +12,13 @@
         </a>
 
         <ul class="nav nav-pills align-items-center">
+            <li class="nav-item"><a href="showVehicles" class="nav-link">Listar autos</a></li>
+            <li class="nav-item"><a href="showCategories" class="nav-link">Listar modelos</a></li>
+
             <?php if ($this->user): ?>
                 <span><?= $this->user->name ?></span>
-                <li class="nav-item"><a href="showVehicles" class="nav-link">Listar autos</a></li>
                 <li class="nav-item"><a href="logout" class="nav-link">Cerrar sesión</a></li>
             <?php else: ?>
-                <li class="nav-item"><a href="showVehicles" class="nav-link">Listar autos</a></li>
                 <li class="nav-item"><a href="showLogin" class="nav-link">Iniciar sesión</a></li>
             <?php endif ?>
         </ul>

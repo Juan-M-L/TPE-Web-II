@@ -1,19 +1,43 @@
 <?php
+require_once 'config.php';
 
 class MainModel {
-    private $db;
+    protected $db;
     private $dbError;
 
     //Inicia conexión con la base de datos. 
     public function __construct() {
         try {
-            $this->db = new PDO("mysql:host=localhost;"."dbname=autos;charset=utf8","root","");
+            //Realiza una nueva conexión, sin definir aún la base de datos.
+            $this->db = new PDO(
+                "mysql:host=".MYSQL_HOST,
+                MYSQL_USER,
+                MYSQL_PASS
+            );
+
+            //Verifica que la base de datos exista. Si no existe, la crea.
+            $this->db->query("CREATE DATABASE IF NOT EXISTS ".MYSQL_DB.";");
+
+            //Se conecta a la base de datos.
+            $this->db->query("USE ".MYSQL_DB);
+
+            $this->__deploy();
         } catch (PDOException $e) {
             $this->dbError = "Error de conexión con la base de datos: " . $e->getMessage();
         }
     }
 
-    //Obtiene el valor $dbError, que indica si hubo o no un error de conexión. con la BD.
+    //Crea las tablas de la base de datos, si no hay tablas presentes.
+    private function __deploy() {
+        $query = $this->db->query('SHOW TABLES');
+        $tables = $query->fetchAll();
+        if(count($tables) == 0) {
+            $sql = file_get_contents("autos.sql");
+            $this->db->query($sql);
+        }
+    }
+
+    //Obtiene el valor $dbError, que indica si hubo o no un error de conexión con la BD.
     public function getDBError() {
         return $this->dbError;
     }
@@ -26,7 +50,7 @@ class MainModel {
         Auto.Marca, 
         Auto.ModeloId, 
         Auto.Precio, 
-        Modelo.Nombre as ModeloNombre
+        Modelo.Nombre
         FROM Auto JOIN Modelo ON Auto.ModeloId = Modelo.Id;");
         $data->execute();
         return $data->fetchAll();
@@ -41,7 +65,7 @@ class MainModel {
         Auto.ModeloId, 
         Auto.Kilometraje, 
         Auto.Precio, 
-        Modelo.Nombre as ModeloNombre, 
+        Modelo.Nombre, 
         Modelo.Anio, 
         Modelo.Capacidad, 
         Modelo.Combustible
@@ -51,7 +75,23 @@ class MainModel {
         return $data->fetchAll();
     }
 
-    // Obtiene todas las categorías (marcas)
+    //Agrega un auto a la base de datos.
+    public function addVehicle($marca, $modeloId, $kilometraje, $precio) {
+        $data = $this->db->prepare("INSERT INTO Auto (Marca, ModeloId, Kilometraje, Precio) VALUES (?,?,?,?);");
+        $data->execute(array($marca, $modeloId, $kilometraje, $precio));
+    }
+
+    public function updateVehicle($id, $marca, $modeloId, $kilometraje, $precio) {
+        $data = $this->db->prepare("UPDATE Auto SET Marca = ?, ModeloId = ?, Kilometraje = ?, Precio = ? WHERE Id = ?;");
+        $data->execute(array($marca, $modeloId, $kilometraje, $precio, $id));
+    }
+
+    public function deleteVehicle($id) {
+        $data = $this->db->prepare("DELETE FROM Auto WHERE Id = ?;");
+        $data->execute(array($id));
+    }
+
+    // Obtiene todas las categorías (modelos)
     public function getAllCategories() {
         if ($this->dbError) return [];
         $data = $this->db->prepare("SELECT * FROM modelo;");
