@@ -7,6 +7,7 @@
             $response->user->id = $_SESSION['USER_ID'];
             $response->user->name = $_SESSION['USER_NAME'];
 
+            //Si el usuario es webadmin, concede derechos de administrador.
             if ($_SESSION['USER_NAME'] == "webadmin") {
                 $response->user->admin = true;
             } else {
