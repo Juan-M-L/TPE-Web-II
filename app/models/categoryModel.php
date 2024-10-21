@@ -1,40 +1,57 @@
-
 <?php
+
 class CategoryModel {
     private $db;
 
     public function __construct() {
-        $this->db = new PDO('mysql:host=localhost;dbname=autos', 'root', ''); // Asegúrate de usar las credenciales correctas.
+        // Asegúrate de inicializar la conexión a la base de datos aquí
+        $this->db = new PDO("mysql:host=localhost;"."dbname=autos;charset=utf8","root","");
+        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
+
+
+
 
     public function getAllCategories() {
-        $stmt = $this->db->prepare("SELECT * FROM modelo"); // Cambia 'categoria' por el nombre correcto de tu tabla
+        $stmt = $this->db->prepare("SELECT * FROM modelo");
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    public function addCategory($name, $year, $capacity, $fuelType) {
-        $stmt = $this->db->prepare("INSERT INTO modelo (Nombre, Anio, Capacidad, Combustible) VALUES (?, ?, ?, ?)");
-        return $stmt->execute([$name, $year, $capacity, $fuelType]);
+    // Obtener una categoría por su ID
+    public function getById($id) {
+        foreach ($this->categories as $category) {
+            if ($category['Id'] == $id) {
+                return $category;
+            }
+        }
+        return null; // Si no se encuentra la categoría
     }
-    
 
-    public function editCategory($id, $name, $year, $capacity, $fuelType) {
-        $stmt = $this->db->prepare("UPDATE modelo SET Nombre = ?, Anio = ?, Capacidad = ?, Combustible = ? WHERE Id = ?");
-        return $stmt->execute([$name, $year, $capacity, $fuelType, $id]);
+    // Agregar una nueva categoría
+    public function addCategory($nombre, $anio, $capacidad, $combustible) {
+        $newId = count($this->categories) + 1; // Generamos un ID simple
+        $this->categories[] = ['Id' => $newId, 'Nombre' => $nombre];
     }
-    
 
+    // Actualizar una categoría existente
+    public function updateCategory($id, $nombre) {
+        foreach ($this->categories as &$category) {
+            if ($category['Id'] == $id) {
+                $category['Nombre'] = $nombre;
+                return;
+            }
+        }
+    }
+
+    // Eliminar una categoría por su ID
     public function deleteCategory($id) {
-        $stmt = $this->db->prepare("DELETE FROM modelo WHERE Id = ?"); // Cambia 'categoria' por el nombre correcto de tu tabla
-        return $stmt->execute([$id]);
-    }
-
-    public function getCategoryById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM modelo WHERE Id = ?"); // Cambia 'categoria' por el nombre correcto de tu tabla
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_OBJ);
+        foreach ($this->categories as $key => $category) {
+            if ($category['Id'] == $id) {
+                unset($this->categories[$key]);
+                return;
+            }
+        }
     }
 }
-
 ?>
