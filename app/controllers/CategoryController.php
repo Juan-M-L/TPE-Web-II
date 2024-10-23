@@ -1,75 +1,70 @@
 <?php
 require_once 'app/models/categoryModel.php';
+require_once 'app/views/categoryView.php';
 
 class CategoryController {
+    private $response;
     private $categoryModel;
+    private $categoryView;
 
-    public function __construct() {
+    public function __construct($response, $user = null) {
+        $this->response = $response;
         $this->categoryModel = new CategoryModel();
-        $this->user = $_SESSION['user'] ?? null;
+        $this->categoryView = new CategoryView($user);
+    }
+
+    public function showCategories() {
+        $categories = $this->categoryModel->getAllCategories();
+        $this->categoryView->showCategories($categories);
     }
 
     public function showAddCategory() {
-        $categories = $this->categoryModel->getAllCategories();
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/TPE-web-II/templates/showCategories.phtml'; // Cambia la ruta si es necesario
+        $this->categoryView->showAddCategory();
     }
-    
 
     public function addCategory() {
-        $categories = $this->categoryModel->getAllCategories();
-    
-        if (!isset($_POST['Nombre']) || empty($_POST['Nombre'])) {
-            return $this->showAddCategories('Por favor, complete el campo Nombre');
-        }
-    
-        // Captura los datos
-        $nombre = $_POST['Nombre'];
+        $name = $_POST['Nombre'];
         $anio = $_POST['Anio'];
         $capacidad = $_POST['Capacidad'];
         $combustible = $_POST['Combustible'];
-    
-        // Llama a la función para agregar la categoría
-        $this->categoryModel->addCategory($nombre, $anio, $capacidad, $combustible);
-    
-        // Redirige a la página de categorías
-        $mainController = new MainController(); // Crear una instancia del MainController
-        return $mainController->showCategories(); // Llamar a showCategories en MainController
-    }
-    
-    
-    
 
-    public function showUpdateCategory($message = "", $id) {
-        $error = $this->categoryModel->getDBError();
+        if ($this->categoryModel->addCategory($name, $anio, $capacidad, $combustible)) {
+            header('Location: ' . BASE_URL . 'showCategories');
+        } else {
+            $this->categoryView->showAddCategory(true, "Error al agregar la categoría.");
+        }
+    }
+
+    public function showUpdateCategory($id) {
         $category = $this->categoryModel->getCategoryById($id);
-        // Muestra la vista para actualizar la categoría
-        require_once $_SERVER['DOCUMENT_ROOT'] . '/TPE-web-II/templates/updateCategory/bodymodel.phtml'; // Asegúrate de que este archivo exista
+        $this->categoryView->showUpdateCategory($category);
     }
 
     public function updateCategory() {
-        $error = $this->categoryModel->getDBError();
         $id = $_POST['id'];
-        $category = $this->categoryModel->getCategoryById($id);
+        $name = $_POST['Nombre'];
+        $anio = $_POST['Anio'];
+        $capacidad = $_POST['Capacidad'];
+        $combustible = $_POST['Combustible'];
 
-        // Validaciones
-        if (!isset($_POST['nombre']) || empty($_POST['nombre'])) {
-            return $this->mainView->showUpdateCategory($error, 'Por favor, complete el campo Nombre', $id);
+        if ($this->categoryModel->updateCategory($id, $name, $anio, $capacidad, $combustible)) {
+            header('Location: ' . BASE_URL . 'showCategories');
+        } else {
+            $this->categoryView->showUpdateCategory($this->categoryModel->getCategoryById($id), true, "Error al actualizar la categoría.");
         }
-
-        // Captura los datos
-        $nombre = $_POST['nombre'];
-        // Lógica para actualizar la categoría
-        $this->categoryModel->updateCategory($id, $nombre); // Asegúrate de que este método esté definido
-
-        return $this->showUpdateCategory($error, "Categoría actualizada", $id);
     }
 
     public function deleteCategory($id) {
-        $this->categoryModel->deleteCategory($id);
-        header("Location: showCategories");
+        if ($this->categoryModel->deleteCategory($id)) {
+            header('Location: ' . BASE_URL . 'showCategories');
+        } else {
+            $this->categoryView->showCategories($this->categoryModel->getAllCategories(), true);
+        }
     }
 }
 ?>
+
+
 
 
 
