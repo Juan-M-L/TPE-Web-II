@@ -1,19 +1,18 @@
-            <div class="col">
-                <div class="card shadow-sm">
-                    <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
-                        <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
-                    </svg>
-                    <div class="card-body">
-                        <p class="card-text"><?= $category['Nombre']; ?></p>
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a href="<?= 'category?id=' . $category['Id'] ?>" class="btn btn-sm btn-outline-secondary">Ver autos</a>                           
-                                <?php if((isset($this->user->admin) && $this->user->admin == true)): ?>
-                                    <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>                           
-                                    <a href="#" class="btn btn-sm btn-outline-danger">Eliminar</a>                           
-                                <?php endif ?>
-                            </div>
-                        </div>
-                    </div>
+<div class="col">
+    <div class="card shadow-sm">
+        <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+            <rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text>
+        </svg>
+        <div class="card-body">
+            <p class="card-text"><?= $category['Nombre']; ?></p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <a href="<?= 'category?id=' . $category['Id'] ?>" class="btn btn-sm btn-outline-secondary">Ver autos</a>
+                    <?php if((isset($this->user->admin) && $this->user->admin == true)): ?>
+                        <a href="<?= "showUpdateCategory?id=".$category['Id'] ?>" class="btn btn-sm btn-outline-secondary">Editar</a>                          
+                        <a href="<?= "deleteCategory?id=".$category['Id'] ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('¿Estás seguro de que quieres eliminar esta categoría?');">Eliminar</a>                          
+                    <?php endif; ?>
                 </div>
             </div>
+        </div>
+    </div>
