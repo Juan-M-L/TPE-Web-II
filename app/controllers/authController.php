@@ -43,4 +43,11 @@ class AuthController {
             return $this->authView->showLogin('El nombre de usuario y/o la contraseña no son correctas.');
         }
     }
+
+    public function logout() {
+        session_start();
+        session_destroy();
+        header('Location: ' . BASE_URL);
+    }
+
 }

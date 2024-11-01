@@ -97,6 +97,9 @@ switch ($params[0]) {
         $controller = new AuthController();
         $controller->login();
         break;
+    case 'logout':
+        $controller = new AuthController();
+        $controller->logout();
     default:
         echo "Error 404. Página no encontrada";
         break;
