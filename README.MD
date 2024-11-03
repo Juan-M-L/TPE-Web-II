@@ -2,7 +2,7 @@
 
 ![Diagrama](<Diagrama Autos.png>)
 
-Nuestra base de datos es para una tienda de autos de lujo. Los clientes podrán buscar diferentes marcas y modelos y averiguar su precio.
+Nuestra base de datos es para una tienda de autos de lujo. Los clientes podrán buscar diferentes autos y modelos para averiguar sus características y precios.
 
 <h3>Cómo desplegar el sitio</h3>
 <p>1) Descargar y descomprimir la carpeta comprimida en la carpeta htdocs de XAMPP.</p>

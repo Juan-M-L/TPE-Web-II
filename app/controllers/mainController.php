@@ -234,7 +234,7 @@ class MainController {
                 $this->mainView->showDeleteCategory("Este modelo no existe");
             }
         } else {
-            $this->mainView->showDeleteCategory("No puedes eliminar un modelo si tiene autos asociados.");
+            $this->mainView->showDeleteCategory("No puedes eliminar un modelo con autos asociados.");
         }
     }
 }
