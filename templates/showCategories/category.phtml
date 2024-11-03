@@ -9,8 +9,8 @@
                             <div class="btn-group">
                                 <a href="<?= 'category?id=' . $category['Id'] ?>" class="btn btn-sm btn-outline-secondary">Ver autos</a>                           
                                 <?php if((isset($this->user->admin) && $this->user->admin == true)): ?>
-                                    <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>                           
-                                    <a href="#" class="btn btn-sm btn-outline-danger">Eliminar</a>                           
+                                    <a href="<?= 'showUpdateCategory?id=' . $category['Id'] ?>" class="btn btn-sm btn-outline-secondary">Editar</a>                           
+                                    <a href="<?= 'deleteCategory?id=' . $category['Id'] ?>" class="btn btn-sm btn-outline-danger">Eliminar</a>                           
                                 <?php endif ?>
                             </div>
                         </div>

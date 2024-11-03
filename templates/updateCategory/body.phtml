@@ -1,0 +1,33 @@
+<section class="container"> <!-- ADAPTAR A UPDATECATEGORY -->
+        <h3>Actualizar un modelo</h3>
+        <form action="updateCategory" method="POST">
+            <!-- Id (Oculto) -->
+            <input type="hidden" id="id" name="id" value="<?= $category[0]["Id"] ?>">
+            <!-- Nombre -->
+            <div class="form-group col-lg-2">
+                <label for="nombre"></label>
+                <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre", value="<?= $category[0]["Nombre"]?>">
+            </div>
+            <!-- Año -->
+            <div class="form-group col-lg-2">
+                <label for="Anio"></label>
+                <input type="number" min="0" class="form-control" id="anio" name="anio" placeholder="Año", value="<?= $category[0]["Anio"] ?>">
+            </div>
+            <!-- Capacidad -->
+            <div class="form-group col-lg-2">
+                <label for="capacidad"></label>
+                <input type="number" min="0" class="form-control" id="capacidad" name="capacidad" placeholder="Asientos", value="<?= $category[0]["Capacidad"] ?>">
+            </div>
+            <!-- Combustible -->
+            <div class="form-group col-lg-2">
+                <label for="combustible"></label>
+                <input type="text" class="form-control" id="combustible" name="combustible" placeholder="Combustible", value="<?= $category[0]["Combustible"] ?>">
+            </div>
+            <!-- Submit -->
+            <div class="form-group col-lg-2">
+                <label for="submit"></label>
+                <input type="submit" class="form-control" id="submit" name="submit" value="Actualizar">
+            </div>
+        </form>
+        <p><?= $message ?></p>
+    </section>

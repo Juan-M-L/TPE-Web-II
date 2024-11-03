@@ -109,4 +109,37 @@ class MainView {
         }
         require 'templates/layout/footer.phtml';
     }
+
+    public function showAddCategory($DBError, $message="") {
+        require 'templates/layout/header.phtml';
+
+        if ($DBError) {
+            require 'templates/layout/DBError.phtml';
+        }
+
+        require 'templates/addCategory/body.phtml';
+
+        require 'templates/layout/footer.phtml';        
+    }
+
+    public function showUpdateCategory($DBError, $message="", $category) {
+        require 'templates/layout/header.phtml';
+
+        if ($DBError) {
+            require 'templates/layout/DBError.phtml';
+        }
+
+        require 'templates/updateCategory/body.phtml';
+
+        require 'templates/layout/footer.phtml';        
+    }
+
+    public function showDeleteCategory($message="") {
+        require 'templates/layout/header.phtml';
+
+        require 'templates/deleteCategory/body.phtml';
+
+        require 'templates/layout/footer.phtml';
+    }
+
 }

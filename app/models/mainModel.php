@@ -42,8 +42,10 @@ class MainModel {
         return $this->dbError;
     }
 
+    //VEHÍCULOS.
+
     //Consigue todos los datos uniendo los contenidos de ambas tablas.
-    public function getAllData() {
+    public function getVehicleData() {
         if ($this->dbError) return [];
         $data = $this->db->prepare("SELECT 
         Auto.Id as AutoId, 
@@ -91,6 +93,8 @@ class MainModel {
         $data->execute(array($id));
     }
 
+    //CATEGORÍAS.
+
     // Obtiene todas las categorías (modelos)
     public function getAllCategories() {
         if ($this->dbError) return [];
@@ -99,12 +103,34 @@ class MainModel {
         return $data->fetchAll();
     }
 
+    // Obtiene los datos de una categoria.
+    public function getCategoryById($id) {
+        if ($this->dbError | $id == false) return [];
+        $data = $this->db->prepare("SELECT * FROM Modelo WHERE Id = ?;");
+        $data->execute(array($id));
+        return $data->fetchAll();
+    }
+
     // Obtiene vehículos por categoría
     public function getVehiclesByCategory($categoryId) {
         if ($this->dbError || $categoryId == false) return [];
-        $data = $this->db->prepare("SELECT * FROM auto JOIN modelo ON auto.ModeloId = modelo.Id WHERE modelo.Id = :categoryId;");
-        $data->bindParam(':categoryId', $categoryId);
-        $data->execute();
+        $data = $this->db->prepare("SELECT * FROM auto JOIN modelo ON auto.ModeloId = modelo.Id WHERE modelo.Id = ?;");
+        $data->execute(array($categoryId));
         return $data->fetchAll();
+    }
+
+    public function addCategory($nombre, $anio, $capacidad, $combustible) {
+        $data = $this->db->prepare("INSERT INTO modelo (nombre, anio, capacidad, combustible) VALUES (?,?,?,?);");
+        $data->execute(array($nombre, $anio, $capacidad, $combustible));
+    }
+
+    public function updateCategory($id, $nombre, $anio, $capacidad, $combustible) {
+        $data = $this->db->prepare("UPDATE modelo SET Nombre = ?, Anio = ?, Capacidad = ?, Combustible = ? WHERE Id = ?;");
+        $data->execute(array($nombre, $anio, $capacidad, $combustible, $id));
+    }
+
+    public function deleteCategory($id) {
+        $data = $this->db->prepare("DELETE FROM modelo WHERE Id = ?");
+        $data->execute(array($id));
     }
 }
