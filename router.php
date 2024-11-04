@@ -4,7 +4,6 @@ require_once "app/middleware/sessionAuthMiddleware.php";
 require_once "app/middleware/verifyAuthMiddleware.php";
 require_once "app/controllers/authController.php";
 require_once "app/controllers/mainController.php";
-require_once "app/controllers/CategoryController.php";
 
 define('BASE_URL', '//'.$_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . dirname($_SERVER['PHP_SELF']).'/');
 
@@ -17,8 +16,6 @@ if (!empty($_GET["action"])) {
 }
 
 $params = explode("/", $action);
-
-$categoryController = new CategoryController($response);
 
 switch ($params[0]) {
     //Lleva al sitio principal.
@@ -57,7 +54,7 @@ switch ($params[0]) {
         $controller = new MainController($response);
         $controller->addVehicle();
         break;
-
+    //Muestra el menú para actualizar un vehículo.
     case 'showUpdateVehicle':
         sessionAuthMiddleware($response);
         verifyAuthMiddleware($response);
@@ -65,14 +62,14 @@ switch ($params[0]) {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         $controller->showUpdateVehicle("", $id);
         break;
-
+    //Actualiza un vehículo.
     case 'updateVehicle':
         sessionAuthMiddleware($response);
         verifyAuthMiddleware($response);
         $controller = new MainController($response);
         $controller->updateVehicle();
         break;
-
+    //Elimina un vehículo.
     case 'deleteVehicle':
         sessionAuthMiddleware($response);
         verifyAuthMiddleware($response);
@@ -93,6 +90,43 @@ switch ($params[0]) {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         $controller->showVehiclesByCategory($id);
         break; 
+    //Muestra el menú de añadir categoría.
+    case 'showAddCategory':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $controller->showAddCategory();
+        break;
+    //Muestra el menú de actualizar categoría.
+    case 'showUpdateCategory':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $controller->showUpdateCategory("", $id);
+        break;
+    //Añade categoría (modelo).
+    case 'addCategory':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $controller->addCategory();
+        break;
+    //Actualiza categoría.
+    case 'updateCategory':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $controller->updateCategory();
+        break;
+    //Elimina una categoría.
+    case 'deleteCategory':
+        sessionAuthMiddleware($response);
+        verifyAuthMiddleware($response);
+        $controller = new MainController($response);
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+        $controller->deleteCategory($id);
+        break;
     //Muestra la sección de iniciar sesión.
     case 'showLogin':
         $controller = new AuthController();
@@ -103,46 +137,10 @@ switch ($params[0]) {
         $controller = new AuthController();
         $controller->login();
         break;
-
-    case 'showCategories':
-        sessionAuthMiddleware($response);
-        $categoryController->showCategories();
-        break;
-    
-    case 'showAddCategory':
-        sessionAuthMiddleware($response);
-        verifyAuthMiddleware($response);
-        $categoryController->showAddCategory();
-        break;
-    
-    case 'addCategory':
-        sessionAuthMiddleware($response);
-        verifyAuthMiddleware($response);
-        $categoryController->addCategory();
-        break;
-    
-    case 'showUpdateCategory':
-        sessionAuthMiddleware($response);
-        verifyAuthMiddleware($response);
-        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
-        $categoryController->showUpdateCategory($id);
-        break;
-    
-    case 'updateCategory':
-        sessionAuthMiddleware($response);
-        verifyAuthMiddleware($response);
-        $categoryController->updateCategory();
-        break;
-    
-    case 'deleteCategory':
-        sessionAuthMiddleware($response);
-        verifyAuthMiddleware($response);
-        $categoryController->deleteCategory($_GET['id']);
-        break;
-    
+    //Cierra sesión
     case 'logout':
-        $authController = new AuthController();
-        $authController->logout();
+        $controller = new AuthController();
+        $controller->logout();
         break;
     default:
         echo "Error 404. Página no encontrada";

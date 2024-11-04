@@ -18,10 +18,12 @@ class MainController {
         $this->mainView->home($error);
     }
 
+    //VEHÍCULOS.
+
     //Acá le indica al Modelo que agarre todos los datos, y a la vista que muestre esos datos.
     public function showVehicles() {
         $error = $this->mainModel->getDBError();
-        $data = $this->mainModel->getAllData();
+        $data = $this->mainModel->getVehicleData();
         $this->mainView->showVehicles($data, $error);
     }
 
@@ -49,7 +51,7 @@ class MainController {
             return $this->mainView->showAddVehicle($error, "Por favor, complete el campo Modelo", $categories);
         }
 
-        if (!isset($_POST['kilometraje']) || empty($_POST['kilometraje'])) {
+        if (!isset($_POST['kilometraje']) || $_POST['kilometraje'] === "") {
             return $this->mainView->showAddVehicle($error, "Por favor, complete el campo Kilometraje", $categories);
         }
 
@@ -92,7 +94,7 @@ class MainController {
             return $this->mainView->showUpdateVehicle($error, "Por favor, complete el campo Modelo", $categories, $vehicle);
         }
 
-        if (!isset($_POST['kilometraje']) || empty($_POST['kilometraje'])) {
+        if (!isset($_POST['kilometraje']) || $_POST['kilometraje'] === "") {
             return $this->mainView->showUpdateVehicle($error, "Por favor, complete el campo Kilometraje", $categories, $vehicle);
         }
 
@@ -118,6 +120,8 @@ class MainController {
         header("Location: ". BASE_URL ."/showVehicles");
     }
 
+    //CATEGORÍAS.
+
     public function showCategories() {
         $error = $this->mainModel->getDBError();
         $categories = $this->mainModel->getAllCategories();
@@ -128,5 +132,109 @@ class MainController {
         $error = $this->mainModel->getDBError();
         $vehicles = $this->mainModel->getVehiclesByCategory($categoryId);
         $this->mainView->showVehicles($vehicles, $error);
+    }
+
+    public function showAddCategory($message="") {
+        $error = $this->mainModel->getDBError();
+        $this->mainView->showAddCategory($error, $message);
+    }
+
+    public function addCategory() {
+        $error = $this->mainModel->getDBError();
+
+        if (!isset($_POST['nombre']) || empty($_POST['nombre'])) {
+            return $this->mainView->showAddCategory($error, 'Por favor, complete el campo Nombre');
+        }
+    
+        if (!isset($_POST['anio']) || empty($_POST['anio'])) {
+            return $this->mainView->showAddCategory($error, "Por favor, complete el campo Año");
+        }
+
+        if (!isset($_POST['capacidad']) || empty($_POST['capacidad'])) {
+            return $this->mainView->showAddCategory($error, "Por favor, complete el campo Asientos");
+        }
+
+        if (!isset($_POST['combustible']) || empty($_POST['combustible'])) {
+            return $this->mainView->showAddCategory($error, "Por favor, complete el campo Combustible");
+        }
+
+        if ($_POST['capacidad'] < 1 || $_POST['anio'] < 1) {
+            return $this->mainView->showAddCategory($error, "No se permiten valores por debajo de 1");
+        }
+
+        if ($_POST['anio'] > getdate()["year"]) {
+            return $this->mainView->showAddCategory($error, "No se permiten valores superiores a ".getdate()["year"]." en Año");
+        }
+
+
+        $nombre = $_POST['nombre'];
+        $anio = $_POST['anio'];
+        $capacidad = $_POST['capacidad'];
+        $combustible = $_POST['combustible'];
+
+        $this->mainModel->addCategory($nombre, $anio, $capacidad, $combustible);
+
+        return $this->mainView->showAddCategory($error, "Modelo agregado");
+
+    }
+
+    public function showUpdateCategory($message="", $id) {
+        $error = $this->mainModel->getDBError();
+        $category = $this->mainModel->getCategoryById($id);
+        $this->mainView->showUpdateCategory($error, $message, $category);
+    }
+
+    public function updateCategory() { // Adaptar código para que actualice en vez de agregar.
+        $error = $this->mainModel->getDBError();
+        $id = $_POST['id'];
+        $category = $this->mainModel->getCategoryById($id);
+
+        if (!isset($_POST['nombre']) || empty($_POST['nombre'])) {
+            return $this->mainView->showUpdateCategory($error, 'Por favor, complete el campo Nombre', $category);
+        }
+    
+        if (!isset($_POST['anio']) || empty($_POST['anio'])) {
+            return $this->mainView->showUpdateCategory($error, "Por favor, complete el campo Año", $category);
+        }
+
+        if (!isset($_POST['capacidad']) || empty($_POST['capacidad'])) {
+            return $this->mainView->showUpdateCategory($error, "Por favor, complete el campo Asientos", $category);
+        }
+
+        if (!isset($_POST['combustible']) || empty($_POST['combustible'])) {
+            return $this->mainView->showUpdateCategory($error, "Por favor, complete el campo Combustible", $category);
+        }
+
+        if ($_POST['capacidad'] < 1 || $_POST['anio'] < 1) {
+            return $this->mainView->showUpdateCategory($error, "No se permiten valores por debajo de 1", $category);
+        }
+
+        if ($_POST['anio'] > getdate()["year"]) {
+            return $this->mainView->showUpdateCategory($error, "No se permiten valores superiores a ".getdate()["year"]." en el campo Año", $category);
+        }
+
+        $nombre = $_POST['nombre'];
+        $anio = $_POST['anio'];
+        $capacidad = $_POST['capacidad'];
+        $combustible = $_POST['combustible'];
+
+        $this->mainModel->UpdateCategory($id, $nombre, $anio, $capacidad, $combustible);
+
+        return $this->mainView->showUpdateCategory($error, "Modelo actualizado", $this->mainModel->getCategoryById($id));
+    }
+
+    public function deleteCategory($categoryId) {
+        $vehicles = $this->mainModel->getVehiclesByCategory($categoryId);
+        if (empty($vehicles)) {
+            if (!empty($this->mainModel->getCategoryById($categoryId))) {
+                $this->mainModel->deleteCategory($categoryId);
+                header("Location: " . BASE_URL . "/showCategories");
+                return;
+            } else {
+                $this->mainView->showDeleteCategory("Este modelo no existe");
+            }
+        } else {
+            $this->mainView->showDeleteCategory("No puedes eliminar un modelo con autos asociados.");
+        }
     }
 }
